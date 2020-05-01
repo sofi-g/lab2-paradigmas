@@ -4,7 +4,6 @@ import org.json4s.JValue
 import org.json4s.DefaultFormats
 import org.json4s.JsonAST.JString
 
-
 /* Object companion of class Category */
 object Category extends ModelCompanion[Category] {
 
@@ -20,9 +19,7 @@ object Category extends ModelCompanion[Category] {
 }
 
 class Category(/*name:String*/) extends Model[Category] {
-  
-  // TODO complete here with the methods for your model
-  
+    
   protected[models] var name: String = "" // la idea es que ese es el valor inicial
   
   def getName: String = name
@@ -32,7 +29,7 @@ class Category(/*name:String*/) extends Model[Category] {
   override def fromJson(jsonValue: JValue): Category = {
     (jsonValue \ "name") match {
       case JString(value) => name = value.toString
-      case _ =>  // Do nothing, things may not have an id //
+      case _ =>  // Do nothing
     }
     this  // Return a reference to this object.
   }

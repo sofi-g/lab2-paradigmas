@@ -34,16 +34,13 @@ class DatabaseTable[M <: Model[M]](val filename: String) {
 
   /* Return an immutable copy of the list of instances. */
   def all: List[M] = _instances.values.toList
-    // TODO implement this function taking advatage of functional programming!
-  
 
   /* Return Some(instance) if there is an instance in _instances with @id.
    * Return None otherwise.
    */
   def get(id: Int): Option[M] = {
-    // TODO implement this function taking advatage of functional programming!
     all.find(m => m.toMap("id") == id) match {
-      case Some(value) => value = id                //Genera un error de reassignment to val en la asignación
+      case Some(instance) => Some(instance)
       case None => None
     }
   }
@@ -55,8 +52,7 @@ class DatabaseTable[M <: Model[M]](val filename: String) {
    * `Map("earnings" -> "10")`
    */
   def filter(attributes: Map[String, Any]): List[M] = {
-    // TODO implement this function taking advatage of OOP!
-    List()
+    all.filter(m => attributes.toSet.subsetOf(m.toMap.toSet))
   }
 
   /* ** YOU DON'T NEED TO TOUCH ANYTHING BELOW THIS LINE **
