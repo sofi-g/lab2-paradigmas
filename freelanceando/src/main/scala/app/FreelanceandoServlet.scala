@@ -7,7 +7,7 @@ import models._
 import models.database.Database
 
 
-class FreelanceandoServlet(db : Database) extends ScalatraServlet with  JacksonJsonSupport{
+class FreelanceandoServlet(db : Database) extends ScalatraServlet with JacksonJsonSupport{
   protected implicit val jsonFormats: Formats = DefaultFormats
 
   before() {
@@ -15,7 +15,29 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet with  JacksonJ
   }
   // Here you have to complete all the API endopoints.
 
-  get("/api/categories") { db.categories.all }
+  //get("/api/categories") { db.categories.all }
+  get("/api/categories") {
+    Ok (
+      db.categories.all.map(c => c.toMap))
+  }
+  /*
+  get("/api/freelancers") {
+    Ok (
+      db.categories.all.map(c => c.toMap))
+  }
+  */
+   post("/api/freelancers") {
+   parsedBody match {
+     case JNothing => BadRequest("Bad Json\n")
+     case parsedResponse => {
+       val freelancer = new Freelancer()
+       // Do things to create client here
+       Ok(freelancer.getId)
+     }
+   }
+ }
+
+
 
 }
 

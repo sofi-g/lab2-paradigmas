@@ -17,6 +17,10 @@ class Database (val databaseDirname: String) {
   // and querying instances.
   val categories = new DatabaseTable[Category](
     s"${databaseDirname}/categories.json")
+  
+  val freelancers = new DatabaseTable[Category](
+    s"${databaseDirname}/freelancers.json"
+  )
 
   def load: Unit = {
     categories.load(Category)

@@ -39,7 +39,7 @@ class DatabaseTable[M <: Model[M]](val filename: String) {
    * Return None otherwise.
    */
   def get(id: Int): Option[M] = {
-    all.find(m => m.toMap("id") == id) match {
+    all.find(m => m.toMap("id") == id) match { //RECORDAR: Modificar para que sea mas eficiente con _instances
       case Some(instance) => Some(instance)
       case None => None
     }

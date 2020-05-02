@@ -20,18 +20,21 @@ object Category extends ModelCompanion[Category] {
 
 class Category(/*name:String*/) extends Model[Category] {
     
-  protected[models] var name: String = "" // la idea es que ese es el valor inicial
+  protected[Category] var name: String = "" // la idea es que ese es el valor inicial
   
   def getName: String = name
 
-  override def toMap: Map[String, Any] = Map("name" -> name)
+  override def toMap: Map[String, Any] = Map("name" -> name, "id" -> id)
 
   override def fromJson(jsonValue: JValue): Category = {
+    super.fromJson(jsonValue)
     (jsonValue \ "name") match {
       case JString(value) => name = value.toString
       case _ =>  // Do nothing
     }
+    
     this  // Return a reference to this object.
+  
   }
-
 }
+
