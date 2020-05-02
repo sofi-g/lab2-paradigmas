@@ -18,7 +18,7 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet with JacksonJs
     Ok (
       db.categories.all.map(c => c.toMap))
   }
-
+  
   get("/api/freelancers") {
     Ok (
       db.freelancers.all.map(c => c.toMap))

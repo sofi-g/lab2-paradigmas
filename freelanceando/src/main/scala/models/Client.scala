@@ -2,6 +2,7 @@ package models
 
 import org.json4s.JValue
 import org.json4s.JInt
+import org.json4s.JArray
 import org.json4s.DefaultFormats
 import org.json4s.JsonAST.JString
 
@@ -18,6 +19,7 @@ class Client extends Model[Client] {
   protected[Client] var username: String = "" 
   protected[Client] var country_code: String = ""
   protected[Client] var total_spend: Int = 0 
+  protected[Client] var job_ids: List[Int] = List()
 
   def getUserName: String = username
 
@@ -25,7 +27,8 @@ class Client extends Model[Client] {
     super.toMap + (
       "username" -> username, 
       "country_code" -> country_code, 
-      "total_spend" -> total_spend
+      "total_spend" -> total_spend,
+      "job_ids" -> job_ids
     )
       
   override def fromJson(jsonValue: JValue): Client = {
@@ -40,6 +43,15 @@ class Client extends Model[Client] {
     }
     (jsonValue \ "total_spend") match {
       case JInt(value) => total_spend = value.toInt
+      case _ => 
+    }
+    (jsonValue \ "job_ids") match {
+      case JArray(values) => for (value <- values) {
+                              value match {
+                                case JInt(id) => job_ids = id.toInt :: job_ids
+                                case _ =>
+                              }
+                            }
       case _ => 
     }
     this 

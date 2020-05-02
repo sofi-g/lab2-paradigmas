@@ -55,6 +55,10 @@ class Job extends Model[Job] {
       case JString(value) => preferred_country = value.toString
       case _ => 
     }
+    (jsonValue \ "hourly_price") match {
+      case JInt(value) => hourly_price = value.toInt
+      case _ => 
+    }
     this  
   }
 }

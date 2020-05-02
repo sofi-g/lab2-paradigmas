@@ -19,8 +19,8 @@ class Database (val databaseDirname: String) {
     s"${databaseDirname}/categories.json")
   
   val freelancers = new DatabaseTable[Freelancer](
-    s"${databaseDirname}/freelancers.json"
-  )
+    s"${databaseDirname}/freelancers.json")
+    
   val clients = new DatabaseTable[Client](
     s"${databaseDirname}/clients.json"
   )
