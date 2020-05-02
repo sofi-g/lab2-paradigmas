@@ -22,10 +22,10 @@ class Database (val databaseDirname: String) {
     s"${databaseDirname}/freelancers.json"
   )
   val clients = new DatabaseTable[Client](
-    s"${databaseDirname}/freelancers.json"
+    s"${databaseDirname}/clients.json"
   )
   val jobs = new DatabaseTable[Job](
-    s"${databaseDirname}/freelancers.json"
+    s"${databaseDirname}/jobs.json"
   )
 
   def load: Unit = {

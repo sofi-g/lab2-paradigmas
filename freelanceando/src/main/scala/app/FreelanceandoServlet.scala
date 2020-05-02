@@ -13,34 +13,27 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet with JacksonJs
   before() {
     contentType = formats("json")
   }
-  // Here you have to complete all the API endopoints.
-
-  //get("/api/categories") { db.categories.all }
+  
   get("/api/categories") {
     Ok (
       db.categories.all.map(c => c.toMap))
   }
 
-
-  /*
-    get("/api/freelancers") {
+  get("/api/freelancers") {
     Ok (
-      db.freelancer.all.map(c => c.toMap))
+      db.freelancers.all.map(c => c.toMap))
   }
 
-   post("/api/freelancers") {
-   parsedBody match {
-     case JNothing => BadRequest("Bad Json\n")
-     case parsedResponse => {
-       val freelancer = new Freelancer()
-       // Do things to create client here
-       Ok(freelancer.getId)
-     }
-   }
- }
-*/
+  get("/api/clients") {
+    Ok (
+      db.clients.all.map(c => c.toMap))
+  }
 
-
+   get("/api/jobs") {
+    Ok (
+      db.jobs.all.map(c => c.toMap))
+  }
+  
 }
 
 

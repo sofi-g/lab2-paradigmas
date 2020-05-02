@@ -21,8 +21,6 @@ class Job extends Model[Job] {
   protected[Job] var preferred_country: String = "" 
   protected[Job] var hourly_price: Int = 0
   
-  //client_id: int, preferred_expertise: str, preferred_country: str, hourly_price: int}]
-
   def getUserName: String = title
 
   override def toMap: Map[String, Any] = 
@@ -34,7 +32,7 @@ class Job extends Model[Job] {
       "preferred_country" -> preferred_country,
       "hourly_price" -> hourly_price
     )
-      
+
   override def fromJson(jsonValue: JValue): Job = {
     super.fromJson(jsonValue)
     (jsonValue \ "title") match {
