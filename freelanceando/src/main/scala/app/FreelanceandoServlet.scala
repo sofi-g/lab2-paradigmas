@@ -16,12 +16,14 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet with JacksonJs
   
   get("/api/categories") {
     Ok (
-      db.categories.all.map(c => c.toMap))
+      db.categories.all.map(c => c.toMap)
+    )
   }
-  
+  //no tiene que devolver total_earnings
   get("/api/freelancers") {
     Ok (
-      db.freelancers.all.map(c => c.toMap))
+      db.freelancers.all.map(c => c.toMap)
+    )
   }
 
   get("/api/clients") {

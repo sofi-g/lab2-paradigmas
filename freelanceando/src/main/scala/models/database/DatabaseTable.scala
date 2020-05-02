@@ -55,10 +55,13 @@ class DatabaseTable[M <: Model[M]](val filename: String) {
     all.filter(m => attributes.toSet.subsetOf(m.toMap.toSet))
   }
 
+  def exists(attr: String, value: Any): Boolean = 
+    all.exists(m => m.toMap(attr) == value) 
+
   /* ** YOU DON'T NEED TO TOUCH ANYTHING BELOW THIS LINE **
    * (unless you are doing extra exercises)
    */
-
+  
   def loadJsonFile: Try[List[JValue]] = Try {
     println(s"\t Loading table ${filename}")
     val source = Source.fromFile(filename)

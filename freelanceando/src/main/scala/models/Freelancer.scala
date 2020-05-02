@@ -17,8 +17,9 @@ class Freelancer extends Model[Freelancer] {
   protected[Freelancer] var username: String = "" 
   protected[Freelancer] var country_code: String = ""
   protected[Freelancer] var category_ids: List[Int] = List()
-  protected[Freelancer] var reputation: String = ""
+  protected[Freelancer] var reputation: String = "junior" 
   protected[Freelancer] var hourly_price: Int = 0
+  protected[Freelancer] var total_earnings: Int = 0
   
   def getUserName: String = username
 
@@ -28,7 +29,9 @@ class Freelancer extends Model[Freelancer] {
       "country_code" -> country_code, 
       "category_ids" -> category_ids, 
       "reputation" -> reputation,
-      "hourly_price" -> hourly_price)
+      "hourly_price" -> hourly_price,
+      "total_earnings" -> total_earnings
+    )
       
   override def fromJson(jsonValue: JValue): Freelancer = {
     super.fromJson(jsonValue)
@@ -55,6 +58,10 @@ class Freelancer extends Model[Freelancer] {
     }
     (jsonValue \ "hourly_price") match {
       case JInt(value) => hourly_price = value.toInt
+      case _ => 
+    }
+    (jsonValue \ "total_earnings") match {
+      case JInt(value) => total_earnings = value.toInt
       case _ => 
     }
     this  

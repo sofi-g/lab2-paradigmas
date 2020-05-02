@@ -1,0 +1,2 @@
+[{"title": "teacher","id":1,"category_id":1,"client_id":1, "preferred_expertise": "junior", "preferred_country": "ARG", "hourly_price": 400},
+    {"title": "teacher","id":2,"category_id":2,"client_id":2, "preferred_expertise": "senior", "preferred_country": "ARG", "hourly_price": 300}]
