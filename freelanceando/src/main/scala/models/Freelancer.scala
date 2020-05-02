@@ -6,24 +6,20 @@ import org.json4s.JInt
 import org.json4s.DefaultFormats
 import org.json4s.JsonAST.JString
 
-object Freelancers extends ModelCompanion[Freelancers] {
-
-  protected def dbTable: DatabaseTable[Freelancers] = Database.freelancer
+object Freelancer extends ModelCompanion[Freelancer] {
 
   implicit lazy val formats = DefaultFormats
 
-  def apply: Freelancers = new Freelancers
+  def apply: Freelancer = new Freelancer
 }
 
-class Freelancers extends Model[Freelancers] {
+class Freelancer extends Model[Freelancer] {
 
-  protected def dbTable: DatabaseTable[Freelancers] = Freelancers.dbTable
-
-  protected[Freelancers] var username: String = "" 
-  protected[Freelancers] var country_code: String = ""
-  protected[Freelancers] var category_ids: List[Int] = List() 
-  protected[Freelancers] var reputation: String = ""
-  protected[Freelancers] var hourly_price: Int = 0
+  protected[Freelancer] var username: String = "" 
+  protected[Freelancer] var country_code: String = ""
+  protected[Freelancer] var category_ids: List[Int] = List() 
+  protected[Freelancer] var reputation: String = ""
+  protected[Freelancer] var hourly_price: Int = 0
   // si ponemos que la categoria de freelancer sea un id de categoria? o como hacemos? 
   // las categorías en las que trabajan, 
 
@@ -39,7 +35,7 @@ class Freelancers extends Model[Freelancers] {
       "reputation" -> reputation,
       "hourly_price" -> hourly_price)
       
-  override def fromJson(jsonValue: JValue): Freelancers = {
+  override def fromJson(jsonValue: JValue): Freelancer = {
     super.fromJson(jsonValue)
     (jsonValue \ "username") match {
       case JString(value) => username = value.toString
