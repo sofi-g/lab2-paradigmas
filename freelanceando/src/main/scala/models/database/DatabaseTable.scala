@@ -38,12 +38,7 @@ class DatabaseTable[M <: Model[M]](val filename: String) {
   /* Return Some(instance) if there is an instance in _instances with @id.
    * Return None otherwise.
    */
-  def get(id: Int): Option[M] = {
-    all.find(m => m.toMap("id") == id) match { //RECORDAR: Modificar para que sea mas eficiente con _instances
-      case Some(instance) => Some(instance)
-      case None => None
-    }
-  }
+  def get(id: Int): Option[M] = _instances.get(id)
 
   /* Return a list of instances that matches the pairs
    * (attributeName, attributeValue) in @attributes map. Instances must match
