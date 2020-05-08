@@ -22,6 +22,7 @@ class Freelancer extends Model[Freelancer] {
   protected[Freelancer] var total_earnings: Int = 0
   
   def getUserName: String = username
+  def getCategoryIds: List[Int] = category_ids
 
   override def toMap: Map[String, Any] = 
     super.toMap + (
@@ -32,38 +33,17 @@ class Freelancer extends Model[Freelancer] {
       "hourly_price" -> hourly_price,
       "total_earnings" -> total_earnings
     )
-      
+ 
   override def fromJson(jsonValue: JValue): Freelancer = {
-    super.fromJson(jsonValue)
-    (jsonValue \ "username") match {
-      case JString(value) => username = value.toString
-      case _ =>  
-    }
-    (jsonValue \ "country_code") match {
-      case JString(value) => country_code = value.toString
-      case _ => 
-    }
-    (jsonValue \ "category_ids") match {
-      case JArray(values) => for (value <- values) {
-                              value match {
-                                case JInt(id) => category_ids = id.toInt :: category_ids
-                                case _ =>
-                              }
-                            }
-      case _ => 
-    }
-    (jsonValue \ "reputation") match { 
-      case JString(value) => reputation = value.toString
-      case _ => 
-    }
-    (jsonValue \ "hourly_price") match {
-      case JInt(value) => hourly_price = value.toInt
-      case _ => 
-    }
-    (jsonValue \ "total_earnings") match {
-      case JInt(value) => total_earnings = value.toInt
-      case _ => 
-    }
-    this  
+    super.fromJson(jsonValue) 
+    try {
+    username = (jsonValue \ "username").extract[String]
+    country_code = (jsonValue \ "country_code").extract[String] 
+    category_ids = (jsonValue \ "category_ids").extract[List[Int]]
+    reputation = (jsonValue \ "reputation").extract[String]
+    hourly_price = (jsonValue \ "hourly_price").extract[Int]
+    total_earnings = (jsonValue \ "total_earnings").extract[Int]
+    } 
+    this
   }
 }

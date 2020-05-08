@@ -33,7 +33,7 @@ trait Model[M <: Model[M]] { self: M =>
 
   def getId: Int = id  // By using this function, the id can be viewed by others,
                      // but not modified.
-
+  
   // Returns a dictionary where keys are the object attributes' names and
   // values are the object attributes' values
   def toMap: Map[String, Any] = Map("id" -> id)

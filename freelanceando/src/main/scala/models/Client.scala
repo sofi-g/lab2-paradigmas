@@ -33,27 +33,12 @@ class Client extends Model[Client] {
       
   override def fromJson(jsonValue: JValue): Client = {
     super.fromJson(jsonValue)
-    (jsonValue \ "username") match {
-      case JString(value) => username = value.toString
-      case _ => 
-    }
-    (jsonValue \ "country_code") match {
-      case JString(value) => country_code = value.toString
-      case _ => 
-    }
-    (jsonValue \ "total_spend") match {
-      case JInt(value) => total_spend = value.toInt
-      case _ => 
-    }
-    (jsonValue \ "job_ids") match {
-      case JArray(values) => for (value <- values) {
-                              value match {
-                                case JInt(id) => job_ids = id.toInt :: job_ids
-                                case _ =>
-                              }
-                            }
-      case _ => 
-    }
+    super.fromJson(jsonValue)
+    username = (jsonValue \ "username").extract[String]
+    country_code = (jsonValue \ "country_code").extract[String]
+    total_spend = (jsonValue \ "total_spend").extract[Int]
+    job_ids = (jsonValue \ "jobs_ids").extract[List[Int]]
     this 
   }
+   
 }

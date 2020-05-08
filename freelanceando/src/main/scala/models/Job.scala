@@ -35,30 +35,13 @@ class Job extends Model[Job] {
 
   override def fromJson(jsonValue: JValue): Job = {
     super.fromJson(jsonValue)
-    (jsonValue \ "title") match {
-      case JString(value) => title = value.toString
-      case _ =>  
-    }
-    (jsonValue \ "category_id") match {
-      case JInt(value) => category_id = value.toInt
-      case _ => 
-    }
-    (jsonValue \ "client_id") match {
-      case JInt(value) => client_id = value.toInt
-      case _ => 
-    }
-    (jsonValue \ "preferred_expertise") match {
-      case JString(value) => preferred_expertise = value.toString
-      case _ => 
-    }
-    (jsonValue \ "preferred_country") match {
-      case JString(value) => preferred_country = value.toString
-      case _ => 
-    }
-    (jsonValue \ "hourly_price") match {
-      case JInt(value) => hourly_price = value.toInt
-      case _ => 
-    }
+    title = (jsonValue \ "title").extract[String]
+    category_id = (jsonValue \ "category_id").extract[Int]
+    client_id = (jsonValue \ "client_id").extract[Int]
+    preferred_expertise = (jsonValue \ "preferred_expertise").extract[String]
+    preferred_country = (jsonValue \ "preferred_country").extract[String]
+    hourly_price = (jsonValue \ "hourly_price").extract[Int]
+    
     this  
   }
 }
