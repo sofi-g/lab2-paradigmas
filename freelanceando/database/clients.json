@@ -1,3 +1,1 @@
-[{"username":"Pedro","id": 1, "country_code": "ARG", "total_spend": 645, "job_ids":[1,2]},
-    {"username":"Ana", "id": 2, "country_code": "JPN", "total_spend": 90, "job_ids":[2]}] 
-
+[{"username":"Ana","job_ids":[],"country_code":"JPN","id":2,"total_spend":90},{"username":"male","job_ids":[],"country_code":"ARG","id":5,"total_spend":0},{"username":"Pedro","job_ids":[],"country_code":"ARG","id":1,"total_spend":645},{"username":"1","job_ids":[],"country_code":"ARG","id":9,"total_spend":0},{"username":"Vilma","job_ids":[],"country_code":"ARG","id":3,"total_spend":20},{"username":"male","job_ids":[],"country_code":"ARG","id":6,"total_spend":0}]

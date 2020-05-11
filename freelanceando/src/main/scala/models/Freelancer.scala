@@ -25,7 +25,7 @@ class Freelancer extends Model[Freelancer] {
   def getCategoryIds: List[Int] = category_ids
 
   override def toMap: Map[String, Any] = 
-    super.toMap + (
+    super.toMap + ( 
       "username" -> username, 
       "country_code" -> country_code, 
       "category_ids" -> category_ids, 
@@ -34,16 +34,15 @@ class Freelancer extends Model[Freelancer] {
       "total_earnings" -> total_earnings
     )
  
-  override def fromJson(jsonValue: JValue): Freelancer = {
+  override def fromJson(jsonValue: JValue): Freelancer = {  
     super.fromJson(jsonValue) 
-    try {
     username = (jsonValue \ "username").extract[String]
     country_code = (jsonValue \ "country_code").extract[String] 
     category_ids = (jsonValue \ "category_ids").extract[List[Int]]
     reputation = (jsonValue \ "reputation").extract[String]
     hourly_price = (jsonValue \ "hourly_price").extract[Int]
     total_earnings = (jsonValue \ "total_earnings").extract[Int]
-    } 
+
     this
   }
 }

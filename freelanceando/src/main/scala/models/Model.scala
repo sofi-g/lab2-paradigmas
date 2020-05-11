@@ -17,22 +17,13 @@ trait ModelCompanion[M <: Model[M]] {
 }
 
 
-/* By specifying Model as a trait, we are saying that every class that is a
- * Model, MUST have these attributes and methods.
- * M is just a reference to any class that will (eventually) extend Model.
- * It is necessary, because we need to pass it as a *type parameter*
- * to DatabaseTable.
- * For now, we won't delve into what self is, optionally you can check
- * https://docs.scala-lang.org/tour/self-types.html
- */
 trait Model[M <: Model[M]] { self: M =>
   // When no ID is given, we assign the value 0.
   protected[models] var id: Int = 0
 
   implicit lazy val formats = DefaultFormats
 
-  def getId: Int = id  // By using this function, the id can be viewed by others,
-                     // but not modified.
+  def getId: Int = id  
   
   // Returns a dictionary where keys are the object attributes' names and
   // values are the object attributes' values
