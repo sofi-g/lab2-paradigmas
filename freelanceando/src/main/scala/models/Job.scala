@@ -41,7 +41,7 @@ class Job extends Model[Job] {
     preferred_expertise = (jsonValue \ "preferred_expertise").extract[String]
     preferred_country = (jsonValue \ "preferred_country").extract[String]
     hourly_price = (jsonValue \ "hourly_price").extract[Int]
-    
+   
     this  
   }
 }

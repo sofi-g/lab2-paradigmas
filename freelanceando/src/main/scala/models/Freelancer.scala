@@ -1,6 +1,6 @@
 package models
 
-import org.json4s.{DefaultFormats, JValue, JInt, JArray}
+import org.json4s.{DefaultFormats, JValue, JInt, JNothing}
 import org.json4s.DefaultFormats
 import org.json4s.JsonAST.JString
 
@@ -39,10 +39,16 @@ class Freelancer extends Model[Freelancer] {
     username = (jsonValue \ "username").extract[String]
     country_code = (jsonValue \ "country_code").extract[String] 
     category_ids = (jsonValue \ "category_ids").extract[List[Int]]
-    reputation = (jsonValue \ "reputation").extract[String]
     hourly_price = (jsonValue \ "hourly_price").extract[Int]
-    total_earnings = (jsonValue \ "total_earnings").extract[Int]
-
+    (jsonValue \ "reputation") match { 
+      case value => reputation = value.extract[String] 
+      case JNothing => reputation = "junior"
+    }
+    (jsonValue \ "total_earnings") match { 
+      case value => total_earnings = value.extract[Int] 
+      case JNothing => total_earnings = 0
+    }
+    
     this
   }
 }
