@@ -22,9 +22,15 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
   }
   
   get("/api/freelancers") {
-    Ok (
-      (db.freelancers.all.map(c => c.toMap - "total_earnings")) 
-    )
+    try {
+      val category_id = params("category_id").toInt
+      val parameters = params.toMap - "category_id"
+      (db.freelancers.filter(parameters)).filter(m => m.getCategoryIds.exists(
+        category_id == _)).map(c => c.toMap - "total_earnings")
+    } catch {
+      case e: Exception => (db.freelancers.filter(params.toMap).
+        map(c => c.toMap - "total_earnings"))
+    }
   }
 
   get("/api/freelancers/:id") {
@@ -123,7 +129,7 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
  
   get("/api/jobs") {
     Ok (
-      db.jobs.all.map(c => c.toMap))
+    db.jobs.filter(params.toMap).map(c => c.toMap))
   }
 
   post("/api/jobs") {
@@ -135,36 +141,59 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
         if (!checkParameters(validParameters, parsedResponse)) {
           BadRequest("Unexpected parameters \n")
         } else {
-          val job = new Job()
-          val client_id  = (parsedResponse \ "client_id").extract[Int] 
-          val category_id  = (parsedResponse \ "category_id").extract[Int]   
-          if (!(db.clients.exists("id", client_id))) {
-            BadRequest("Client doesn't exist \n") 
-          } else if (!(db.categories.exists("id", category_id))) { 
-            BadRequest("Category doesn't exist \n")
-          } else {
-            try { 
+          val job = new Job()  
+          try{
+            val client_id  = (parsedResponse \ "client_id").extract[Int] 
+            val category_id  = (parsedResponse \ "category_id").extract[Int]   
+            if (!(db.clients.exists("id", client_id))) {
+              BadRequest("Client doesn't exist \n") 
+            } else if (!(db.categories.exists("id", category_id))) { 
+              BadRequest("Category doesn't exist \n")
+            } else {
               job.fromJson(parsedResponse.extract[JValue]) 
               db.jobs.save(job)
               Ok(job.getId)
-            } catch { 
-              case e: Exception => BadRequest("Falló Jobs.fromJson \n") 
             }
+          } catch { 
+            case e: Exception => BadRequest("Type error\n") 
           }
         }
       }
     }
-  } 
+  }
  
   get("/api/freelancers") {
     Ok (
     db.freelancers.filter(params.toMap).
       map(c => c.toMap - "total_earnings")) 
   }
-
-  get("/api/jobs") {
-    Ok (
-    db.jobs.filter(params.toMap).map(c => c.toMap))
-  }
   
+  post("/api/posts/pay"){
+    parsedBody match {
+      case JNothing => BadRequest("Bad \n") 
+      case parsedResponse => { 
+        val validParameters= List("freelancert_id", "job_id", "amount")
+        if (!checkParameters(validParameters, parsedResponse)){
+          BadRequest("Parameters \n")
+        } else {
+          try {
+            val freelancer_id  = (parsedResponse \ "freelancert_id").extract[Int]
+            val job_id  = (parsedResponse \ "job_id").extract[Int]
+            val amount = (parsedResponse \ "amount").extract[Int]
+            if (!(db.freelancers.exists("id", freelancer_id))){
+              BadRequest("freelancer doesn't exist \n")
+            } else if (!(db.jobs.exists("id", job_id))){ 
+              BadRequest("Job doesn't exist \n")
+            } else { 
+              val job = db.jobs.filter(Map("id" -> job_id)).head
+              db.clients.filter(Map("id" -> job.getClientId)).head.increment(amount)
+              db.freelancers.filter(Map("id" -> freelancer_id)).head.increment(amount)
+            }
+          } catch {
+            case e: Exception => BadRequest("Type error\n")
+          }
+        }
+      }
+    }
+  }
 }

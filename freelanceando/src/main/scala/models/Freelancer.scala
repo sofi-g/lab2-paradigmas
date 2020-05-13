@@ -23,7 +23,8 @@ class Freelancer extends Model[Freelancer] {
   
   def getUserName: String = username
   def getCategoryIds: List[Int] = category_ids
-
+  def increment(amount: Int): Unit = total_earnings += amount
+  
   override def toMap: Map[String, Any] = 
     super.toMap + ( 
       "username" -> username, 

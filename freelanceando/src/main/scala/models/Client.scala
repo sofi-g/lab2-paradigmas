@@ -19,6 +19,7 @@ class Client extends Model[Client] {
   protected[Client] var job_ids: List[Int] = List()
 
   def getUserName: String = username
+  def increment(amount: Int): Unit = total_spend += amount
 
   override def toMap: Map[String, Any] = 
     super.toMap + (
