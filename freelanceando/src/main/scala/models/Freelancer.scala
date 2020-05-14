@@ -22,9 +22,15 @@ class Freelancer extends Model[Freelancer] {
   protected[Freelancer] var total_earnings: Int = 0
   
   def getUserName: String = username
+ 
   def getCategoryIds: List[Int] = category_ids
-  def increment(amount: Int): Unit = total_earnings += amount
-  
+ 
+  def increment(amount: Int): Freelancer = {
+     total_earnings += amount
+     this
+  }
+
+
   override def toMap: Map[String, Any] = 
     super.toMap + ( 
       "username" -> username, 
@@ -38,16 +44,16 @@ class Freelancer extends Model[Freelancer] {
   override def fromJson(jsonValue: JValue): Freelancer = {  
     super.fromJson(jsonValue) 
     username = (jsonValue \ "username").extract[String]
-    country_code = (jsonValue \ "country_code").extract[String] 
+    country_code = (jsonValue \ "country_code").extract[String]  
     category_ids = (jsonValue \ "category_ids").extract[List[Int]]
     hourly_price = (jsonValue \ "hourly_price").extract[Int]
     (jsonValue \ "reputation") match { 
-      case value => reputation = value.extract[String] 
-      case JNothing => reputation = "junior"
+      case JString(value) => reputation = value.toString
+      case _ => reputation = "junior"
     }
-    (jsonValue \ "total_earnings") match { 
-      case value => total_earnings = value.extract[Int] 
-      case JNothing => total_earnings = 0
+    (jsonValue \ "total_earnings") match {
+      case JInt(value) => total_earnings = value.toInt
+      case _ => total_earnings = 0
     }
     
     this

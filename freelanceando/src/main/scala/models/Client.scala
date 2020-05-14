@@ -19,7 +19,11 @@ class Client extends Model[Client] {
   protected[Client] var job_ids: List[Int] = List()
 
   def getUserName: String = username
-  def increment(amount: Int): Unit = total_spend += amount
+  
+  def increment(amount: Int): Client = {
+    total_spend += amount
+    this
+  }  
 
   override def toMap: Map[String, Any] = 
     super.toMap + (
@@ -34,13 +38,14 @@ class Client extends Model[Client] {
     username = (jsonValue \ "username").extract[String]
     country_code = (jsonValue \ "country_code").extract[String]  
     (jsonValue \ "total_spend") match { 
-      case value => total_spend = value.extract[Int] 
-      case JNothing => total_spend = 0
+      case JInt(value) => total_spend = value.toInt 
+      case _ => total_spend = 0
     }
     (jsonValue \ "job_ids") match {  
       case value => job_ids = value.extract[List[Int]] 
-      case JNothing => job_ids = List()
+      case _ => job_ids = List()
     }
+  
     this 
   }
    

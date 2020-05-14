@@ -1,2 +1,1 @@
-[{"username": "juanperez", "id":1, "country_code": "AUS", "category_ids": [1], "reputation":"junior","hourly_price": 60, "total_earnings": 4600 },
-    {"username": "pedrolopez", "id":2, "country_code": "JPN", "category_ids": [1,2], "reputation":"senior","hourly_price": 80, "total_earnings": 28000 }]
+[{"reputation":"senior","username":"pedrolopez","category_ids":[1,2],"country_code":"JPN","id":2,"hourly_price":80,"total_earnings":28000},{"reputation":"junior","username":"juanperez","category_ids":[1],"country_code":"AUS","id":1,"hourly_price":60,"total_earnings":500004600},{"reputation":"junior","username":"Sofi","category_ids":[1],"country_code":"ARG","id":3,"hourly_price":100,"total_earnings":0}]
