@@ -5,9 +5,6 @@ target/
 build/
 database/*
 !database/categories.json
-!database/clients.json
-!database/freelancers.json
-!database/jobs.json
 
 # eclipse
 build

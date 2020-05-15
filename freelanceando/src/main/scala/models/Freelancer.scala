@@ -30,7 +30,6 @@ class Freelancer extends Model[Freelancer] {
      this
   }
 
-
   override def toMap: Map[String, Any] = 
     super.toMap + ( 
       "username" -> username, 

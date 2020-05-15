@@ -28,13 +28,25 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
       db.categories.all.map(c => c.toMap)
     )
   }
+
+  get("/api/freelancers") {
+    try {
+      val category_id = params("category_id").toInt
+      val parameters = params.toMap - "category_id"
+      (db.freelancers.filter(parameters)).filter(m => m.getCategoryIds.exists(
+        category_id == _)).map(c => c.toMap - "total_earnings")
+    } catch {
+      case e: Exception => (db.freelancers.filter(params.toMap).
+        map(c => c.toMap - "total_earnings"))
+    }
+  }
   
   get("/api/freelancers/:id") {
     try {
       val id  = (params("id")).toInt
       if (db.freelancers.exists("id", id)){
         Ok (
-          db.freelancers.get(id).map(c => c.toMap)
+          db.freelancers.get(id).map(f => f.toMap)
         )
       } else {
           BadRequest("Id doesn't exists \n") 
@@ -47,7 +59,7 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
 
   post("/api/freelancers") { 
     parsedBody match {
-      case JNothing => BadRequest("Bad Request \n")
+      case JNothing => BadRequest("Bad Json \n")
       case parsedResponse => {
         val validParameters = List("username", "country_code", 
           "hourly_price","category_ids","reputation") 
@@ -75,7 +87,7 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
 
   get("/api/clients") {
     Ok (
-      db.clients.all.map(c => c.toMap))
+      db.clients.all.map(c => c.toMap - "job_ids"))
   }
 
   get("/api/clients/:id") {
@@ -86,7 +98,7 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
           db.clients.get(id).map(c => c.toMap)
         )
       } else {  
-          BadRequest("Bad Json \n") 
+          BadRequest("Id doesn't exists \n") 
       } 
     } catch {
       case e: java.lang.NumberFormatException => 
@@ -96,7 +108,7 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
   
   post("/api/clients") {
     parsedBody match {
-      case JNothing => BadRequest("Bad Request \n") 
+      case JNothing => BadRequest("Bad Json \n") 
       case parsedResponse => { 
         val validParameters= List("username","country_code")
         if (!checkParameters(validParameters, parsedResponse)){
@@ -114,10 +126,27 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
       }
     }
   }
+
+  get("/api/jobs") {
+    var parameters: Map[String,Any]= params.toMap
+    if (parameters.contains("category_id")){
+      val category_id = params("category_id").toInt
+      parameters = parameters-"category_id" + ("category_id"->category_id)
+      }
+    if (parameters.contains("client_id")){
+      val client_id = params("client_id").toInt
+      parameters = parameters-"client_id" + ("client_id"->client_id)
+    }
+    if (parameters.contains("hourly_price")){
+      val hourly_price = params("hourly_price").toInt
+      parameters = parameters-"hourly_price" + ("hourly_price"-> hourly_price)
+    }
+    db.jobs.filter(parameters).map(j => j.toMap)
+  }
  
   post("/api/jobs") {
     parsedBody match {
-      case JNothing => BadRequest("Bad \n") 
+      case JNothing => BadRequest("Bad Json \n") 
       case parsedResponse => { 
         val validParameters= List("title", "category_id", "client_id",
           "preferred_expertise", "preferred_country", "hourly_price")
@@ -145,23 +174,6 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
       }
     }
   
-  get("/api/freelancers") {
-    try {
-      val category_id = params("category_id").toInt
-      val parameters = params.toMap - "category_id"
-      (db.freelancers.filter(parameters)).filter(m => m.getCategoryIds.exists(
-        category_id == _)).map(c => c.toMap - "total_earnings")
-    } catch {
-      case e: Exception => (db.freelancers.filter(params.toMap).
-        map(c => c.toMap - "total_earnings"))
-    }
-  }
-
-  get("/api/jobs") {
-    Ok (
-    db.jobs.filter(params.toMap).map(c => c.toMap))
-  }
-  
   post("/api/jobs/pay"){
     parsedBody match {
       case JNothing => BadRequest("Bad \n") 
@@ -181,7 +193,7 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
             } else { 
               val job = db.jobs.filter(Map("id" -> job_id)).head
               val client = db.clients.filter(
-                Map("id" -> job.getclient_id)).head.increment(amount)
+                Map("id" -> job.getClientId)).head.increment(amount)
               val freelancer = db.freelancers.filter(
                 Map("id" -> freelancer_id)).head.increment(amount)
               db.clients.save(client)
@@ -189,11 +201,11 @@ class FreelanceandoServlet(db : Database) extends ScalatraServlet
               Ok("Payment was completed successfully \n")
             }
           } catch {
-            case e: Exception => BadRequest("Type error")
+            case e: Exception => BadRequest("Type error\n")
           }
         }
       }
     }
   }
-  
+
 }

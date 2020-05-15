@@ -42,8 +42,8 @@ class Client extends Model[Client] {
       case _ => total_spend = 0
     }
     (jsonValue \ "job_ids") match {  
+      case JNothing => job_ids = List()
       case value => job_ids = value.extract[List[Int]] 
-      case _ => job_ids = List()
     }
   
     this 
